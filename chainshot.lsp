@@ -2,8 +2,8 @@
 
 (let ((all-files '(
 "defaults.lsp"
-"utility.lsp"
 "grid.lsp"
+"utility.lsp"
 ; "result.lsp"
 "player.lsp"
 "guest.lsp"
@@ -16,7 +16,7 @@
 (defun load-files()
   (compile-all)
   (load-compiled)
-  (turn-verbose-off)
+  (set-verbose-off)
   (gc)
   (clean-terminal) )
 

@@ -31,10 +31,15 @@
   (game-over
     (play
       (create-human-player)
-      (create-grid (grid-from-path (create-builder "Path" 'grid-from-path))) ) ) )
+      (build-grid (prompt-for-grid-maker)) ) ) )
 
 (defun game-over(result)
   (print result) )
+
+(defun get-deadline(player)
+  (if (player-feedback player)
+    60
+    (get-playing-time) ) )
 
 (defun play(player grid)
   (let ((deadline (get-deadline player)))

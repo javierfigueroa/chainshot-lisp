@@ -1,13 +1,22 @@
 ;; Utility methods:
 
-(defun turn-verbose-off()
+
+(defun set-verbose-off()
   (setq *print-verbose* NIL) )
 
-(defun turn-verbose-on()
+(defun set-verbose-on()
   (setq *print-verbose* T) )
 
 (defun verbose(&rest args)
   (if *print-verbose*
+    (multiple-value-call 'format t (values-list args))
+  NIL ) )
+
+(defun set-player-feedback(feedback)
+  (setq *player-feedback* feedback) )
+
+(defun player-feedback(&rest args)
+  (if *player-feedback*
     (multiple-value-call 'format t (values-list args))
   NIL ) )
 
@@ -20,11 +29,6 @@
 (defun press-enter 
   NIL (format t "~%Press Enter to continue~%") (read-char) )
 
-(defun get-deadline(player)
-  (if (player-feedback player)
-    60
-    (get-playing-time) ) )
-
 (defun get-playing-time()
   (format t "~%Thanks for asking me to play!~%About how long should I search? (in seconds)~%")
   (let 
@@ -36,13 +40,13 @@
       (now)
       (* search-time-seconds internal-time-units-per-second) ) ) )
 
-(defun set-player-feedback(feedback)
-  (setq *player-feedback* feedback) )
-
-(defun feedback(&rest args)
-  (if *player-feedback*
-    (multiple-value-call 'format t (values-list args))
-  NIL ) )
+(defun create-map(&rest values)
+(let ((map (make-hash-table))
+      (index (list-length values)))
+  (loop for val in (reverse values) do
+    (setf (gethash index map) val)
+    (setq index (1- index)) )
+  map) )
 
 (defun validate-input(test &optional (message "Invalid input, try again...~%"))
    (do ((val (read) (read)))
@@ -59,9 +63,3 @@
       (or (grid-has-combos (grid-board grid))
           (grid-has-combos
             (transpose (pad (grid-board grid) (grid-rows grid) (grid-cols grid) NIL)) ) ) ) )
-
-(defun transpose (x)
-   "Returns a transpose of x (like a matrix).
-    The row width of x' will be the minimum of the column lengths of x.
-    The column length of x' will be the minimum of the row widths of x."
-   (apply #'mapcar (cons #'list x)) )

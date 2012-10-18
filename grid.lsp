@@ -59,13 +59,19 @@
      (grid-colors g)
      (grid-board g) ) )
 
-(defun report-grid-pretty(g s)
+(defun report-grid-pretty(g s k)
   (show-grid g s)
   (format s "~% ~D x ~D grid (~D colors) ~~ ~D pieces remain~%"
     (grid-cols g)
     (grid-rows g)
     (grid-colors g)
     (grid-count g) ) )
+
+(defun transpose (x)
+   "Returns a transpose of x (like a matrix).
+    The row width of x' will be the minimum of the column lengths of x.
+    The column length of x' will be the minimum of the row widths of x."
+   (apply #'mapcar (cons #'list x)) )
 
 (defun compress(board)
    "Modifies board by removing all cells with NIL as a value."

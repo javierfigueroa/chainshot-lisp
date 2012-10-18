@@ -6,6 +6,10 @@
    (name NIL :type simple-string)
    (function 'grid-from-path) )
 
+(defun prompt-for-grid-maker() 
+     (create-builder "Path" 'grid-from-path) )
+
+
 (defun grid-from-path(builder)
    (format t "~%Enter a path for the data set:~%")
    (parse-data-set

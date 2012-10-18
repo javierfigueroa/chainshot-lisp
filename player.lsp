@@ -9,16 +9,8 @@
   play-function )
 
 (defun create-human-player()
-	(create-player 'mutant-move 'play-human T "Human"))
-
-(defun create-map(&rest values)
-  (let ((map (make-hash-table))
-        (index (list-length values)))
-    (loop for val in (reverse values) do
-      (setf (gethash index map) val)
-      (setq index (1- index)) )
-    map) )
-
+	(create-player 'human-move 'play-human T "hello"))
+	
 (defun play-human(player grid deadline &optional (moves (next-move player grid)) (previous-moves '()))
   "This method defines the friendly version of the game play"
   (let ((move (car moves)))
@@ -43,3 +35,16 @@
 (defun player-play(player grid deadline)
   "Calls the player's play function on the grid"
   (funcall (player-play-function player) player grid deadline) )
+
+(defun human-move(grid)
+   (print grid)
+   (format t "~%Please enter the row and column of your next move:~%")
+   (list
+     (let ((rows (grid-rows grid)) (cols (grid-cols grid)))
+       (cons
+         (read-valid
+           #'(lambda (row) (and (integerp row) (between row 0 (1+ rows))))
+           "Please enter a valid row number...~%" )
+         (read-valid
+           #'(lambda (col) (and (integerp col) (between col 0 (1+ cols))))
+           "Please enter a valid column number...~%" ) ) ) ) )
