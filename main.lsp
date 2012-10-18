@@ -45,34 +45,29 @@
   (print result)
   (result-winner result) )
 
-(defun pause NIL (format t "~%Press <Enter> to continue...~%") (read-char) )
+(defun press-enter NIL (format t "~%Press Enter to continue...~%") (read-char) )
 
 (defun directions()
   (clear-screen)
 
-  (format t "Welcome to Chainshot!~%~%")
-  (format t "Overview and objective:~%~%")
-  (format t "The game consists of a board filled with beads. ")
-  (format t "The objective of this game is to remove as many beads as possible - hopefully, every bead - from the grid.~%")
-  
-  (pause)
-
-  (format t "How to play:~%~%")
-  (format t "Beads of the same color that touch each other vertically or horizontally are considered a group. ")
-  (format t "Any group can be removed from the board during a move, but single beads cannot be removed.~%")
-
-  (pause)
-
-  (format t "When a group is removed, all of the beads supported by the group drop down as far as possible in their respective columns. ")
-  (format t "The dropping columns may break up old groups or form new groups in their new positions. ")
-  (format t "If a column becomes empty, every column to its right shifts to the left to fill the empty column.~%")
-
-  (pause)
-
-  (format t "You will now be asked to choose a user (human or AI), and a board-type...~%")
-
-  (pause)
+  (format t "....==================....~%~%")
+  (format t "Your objective:~%~%")
+  (format t "....==================....~%~%")
+  (format t "You'll be presented with a grid of 'beads' represented by G for green, ")
+  (format t "B for blue, O for orange, R for red and L for black. ")
+  (format t "Your objective is to clear as many beads of the grid in the least amount of steps as possible.~%~%")
+  (format t "....==================....~%~%")
+  (format t "Your moves:~%~%")
+  (format t "....==================....~%~%")
+  (format t "You'll need to choose a column and row from the grid to provide the location of a bead within the grid. The beads of the same color that are adjacent to each other, either vertically or horizontally are candidates for removal.")
+  (format t "Only beads that are groups that consist of 3 beads or more will be removed upon a move.~%~%")
+  (format t "....==================....~%~%")
+  (format t "Some dynamics of the game:~%~%")
+  (format t "....==================....~%~%")
+  (format t "Upon removal of a group of beads, the empty spots are filled with beads on higher positions, a 'gravity' effect is applied to the affected columns. If an entire column becomes empty then the next column is pushed to the left to fill in the gap.~%~%")
+  (press-enter)
   T )
+ 
 
 (defun main()
   (game-over

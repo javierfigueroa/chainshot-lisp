@@ -1,8 +1,6 @@
 (let ((all-files '(
-"parse.lsp"
 "utility.lsp"
-"cs_grid.lsp"
-"cs_turn.lsp"
+"helpers.lsp"
 "ai.lsp"
 "users.lsp"
 "settings.lsp"
