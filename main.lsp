@@ -1,3 +1,11 @@
+
+;; Starting point
+
+(defun chainshot()
+  (when (y-or-n-p "Welcome to Chainshot! Review rules of the game?") (rules))
+  (main)
+  T )
+
 (defun rules()
   (clean-terminal)
 
@@ -19,7 +27,23 @@
   (press-enter)
   T )
 
+(defun main()
+  (game-over
+    (play
+      (create-human-player)
+      (create-grid (grid-from-path (create-builder "Path" 'grid-from-path))) ) ) )
 
-(defun chainshot()
-  (when (y-or-n-p "Welcome to Chainshot! Review rules of the game?") (rules))
-  T )
+(defun game-over(result)
+  (print result) )
+
+(defun play(player grid)
+  (let ((deadline (get-deadline player)))
+    (set-player-feedback (player-feedback player))
+    (gc) ;)
+    (clean-terminal)
+    (print grid)
+    (format t "Playing...~%")
+    (if
+      (or (is-solved grid) (is-not-solved grid)) 
+      (create-result grid)
+      (time (player-play player grid deadline)) ) ) )

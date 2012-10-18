@@ -1,8 +1,17 @@
 ;;File loader:
 
 (let ((all-files '(
+"defaults.lsp"
 "utility.lsp"
-"main.lsp") ))
+"grid.lsp"
+; "result.lsp"
+"player.lsp"
+"guest.lsp"
+"dynamics.lsp"
+"builder.lsp"
+"dataset.lsp"
+"main.lsp"
+) ))
 
 (defun load-files()
   (compile-all)
@@ -33,5 +42,7 @@
   (loop for f in all-files do (load f))
   T )
 ) ; end-let
+
+;; Load files
 
 (load-files)
