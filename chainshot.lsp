@@ -1,24 +1,33 @@
-;;File loader:
-
 (let ((all-files '(
-"defaults.lsp"
-"grid.lsp"
+"parse.lsp"
 "utility.lsp"
-; "result.lsp"
-"player.lsp"
-"guest.lsp"
-"dynamics.lsp"
-"builder.lsp"
-"dataset.lsp"
-"main.lsp"
-) ))
+"cs_grid.lsp"
+"cs_turn.lsp"
+"ai.lsp"
+"users.lsp"
+"settings.lsp"
+"grid.lsp"
+"grid-maker.lsp"
+"visitor.lsp"
+"result.lsp"
+"main.lsp") ))
+
+(defun reload()
+  (loop for f in all-files do (load f))
+  T )
 
 (defun load-files()
   (compile-all)
   (load-compiled)
-  (set-verbose-off)
+  (verbose-off)
   (gc)
-  (clean-terminal) )
+  (clear-screen) )
+
+(defun lsp-to-fas(name)
+  (concatenate
+    'simple-string
+    (subseq name 0 (- (length name) 4))
+    ".fas" ) )
 
 (defun compile-all()
   (loop
@@ -32,17 +41,6 @@
     (load (lsp-to-fas file))
     T ) )
 
-(defun lsp-to-fas(name)
-  (concatenate
-    'simple-string
-    (subseq name 0 (- (length name) 4))
-    ".fas" ) )
-
-(defun reload-files()
-  (loop for f in all-files do (load f))
-  T )
 ) ; end-let
-
-;; Load files
 
 (load-files)
