@@ -11,18 +11,7 @@
 ;; User prompts...
 
 (defun prompt-for-user()
-  (let ((user-ht
-    (create-hash-table
-      (create-user 'human-move 'user-friendly T "Human: you!")
-      (create-user 'single-move-per-combo 'first-combo-first-searched NIL "AI simple: The first combo it can find")
-      (create-user 'single-move-per-combo 'depth-first NIL "AI good: depth-first search, strictly one move per combo") ) ))
-   (format t "~%Please choose a user:~%")
-   (maphash
-     #'(lambda (key entry) (format t "  ~A : ~A~%" key entry))
-     user-ht)
-   (gethash
-      (read-valid #'(lambda (choice) (and (numberp choice) (not (null (gethash choice user-ht))))))
-      user-ht) ) )
+  (create-user 'human-move 'user-friendly T "Human"))
 
 ;; Does a call-back to user's move- and play- functions.
 

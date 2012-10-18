@@ -47,7 +47,7 @@
 
 (defun press-enter NIL (format t "~%Press Enter to continue...~%") (read-char) )
 
-(defun directions()
+(defun rules()
   (clear-screen)
 
   (format t "....==================....~%~%")
@@ -75,11 +75,10 @@
       (prompt-for-user)
       (create-grid (prompt-for-grid-maker)) ) ) )
 
-(defun chainshot()
-  (when (y-or-n-p "Would you like to see the directions?") (directions))
+(defun chainshot()	  
+  (when (y-or-n-p "Welcome to Chainshot! Review rules of the game?") (rules))
   (main)
   (do NIL
     ((not (play-again-p)))
     (main) )
-  (format t copyright)
   T )

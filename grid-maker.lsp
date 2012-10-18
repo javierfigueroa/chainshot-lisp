@@ -32,32 +32,7 @@
    (random-fill (make-grid)) )
 
 (defun prompt-for-grid-maker()
-  (let ((grid-makers
-    (create-hash-table
-     (create-data-set "Data-set  1" "ds1.cs"  "( 5 x  5, 4 colors)")
-     (create-data-set "Data-set  2" "ds2.cs"  "( 5 x  5, 3 colors)")
-     (create-data-set "Data-set  3" "ds3.cs"  "( 5 x  5, 4 colors)")
-     (create-data-set "Data-set  4" "ds4.cs"  "( 5 x  5, 5 colors)")
-     (create-data-set "Data-set  5" "ds5.cs"  "( 7 x  7, 3 colors)")
-     (create-data-set "Data-set  6" "ds6.cs"  "( 7 x  7, 4 colors)")
-     (create-data-set "Data-set  7" "ds7.cs"  "( 7 x  7, 5 colors)")
-     (create-data-set "Data-set  8" "ds8.cs"  "(10 x 10, 3 colors)")
-     (create-data-set "Data-set  9" "ds9.cs"  "(10 x 10, 5 colors)")
-     (create-data-set "Data-set 10" "ds10.cs" "(20 x 20, 3 colors)")
-     (create-data-set "Data-set 11" "ds11.cs" "(20 x 20, 5 colors)")
-     (create-data-set "Data-set 12" "ds12.cs" "(20 x 20, 5 colors)")
-     (create-grid-maker "Data-set, user-specified path" 'grid-from-path)
-     (create-grid-maker "Random fill (5 x 5, 3 colors)" 'random-grid-maker-default)
-     (create-grid-maker "Random fill, user-specified size" 'random-grid-maker) ) ))
-
-   (format t "~%Please choose how you would like to construct the board:~%")
-   (maphash
-     #'(lambda (key entry)
-        (format t "  ~A~A : ~A~%" (if (> key 9) "" " ") key entry) )
-    grid-makers)
-   (gethash
-      (read-valid #'(lambda (choice) (and (numberp choice) (not (null (gethash choice grid-makers))))))
-      grid-makers) ) )
+ (create-grid-maker "Data-set, user-specified path" 'grid-from-path))
 
 (defun grid-from-path(grid-maker)
    (format t "~%Please enter the path for the data-set:~%")
