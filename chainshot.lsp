@@ -1,7 +1,7 @@
 (setq default-width 5)
 (setq default-length 5)
 (setq default-colors 5)
-(setq default-print-function 'report-grid-pretty)
+(setq default-print-function 'print-grid)
 
 (setq *print-verbose* NIL)
 (setq *user-feedback* T)
@@ -12,7 +12,7 @@
 "dynamics.lsp"
 "user.lsp"
 "grid.lsp"
-"grid-builder.lsp"
+"data-set.lsp"
 "dead.lsp"
 "result.lsp"
 "main.lsp") ))

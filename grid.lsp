@@ -1,12 +1,10 @@
 (defstruct
-  (grid (:print-function  report-grid))
+  (grid (:print-function  print-grid))
   (board '() :type list)
   (colors default-colors :type integer :read-only T)
   (rows default-w :type integer :read-only T)
   (cols default-len :type integer :read-only T)
   (print-function default-print-function) )
-
-;;; start checked
 
 (defun grid-has-combinations(grid) ;from main
    "Checks the grid to see if it has any vertical combinations available."
@@ -29,7 +27,6 @@
 (defun get-grid-dimensions(grid) 
    "Get grid dimensions."
    (values (grid-rows grid) (grid-cols grid)) )
-
 
 (defun show-grid(grid &optional (s t))
    "Print grid."
@@ -70,24 +67,9 @@
       (lambda (line) (list-length (remove NIL line)))
       (grid-board grid) ) ) )
 
-;;; end checked
-
-(defun report-grid(g s k)
-   (funcall (grid-print-function g) g s k) )
-
-(defun report-grid-count(g s k)
-   (format s "~D remaining" (grid-count g)) )
-
-(defun report-grid-debug(g s k)
-   (format s "~D x ~D grid (~D colors)~%~A"
-     (grid-cols g)
-     (grid-rows g)
-     (grid-colors g)
-     (grid-board g) ) )
-
-(defun report-grid-pretty(g s k)
+(defun print-grid(g s k)
   (show-grid g s)
-  (format s "~% ~D x ~D grid (~D colors) ~~ ~D beads remain~%"
+  (format s "~% ~D x ~D grid with ~D colors and ~D beads remaining~%"
     (grid-cols g)
     (grid-rows g)
     (grid-colors g)
@@ -101,8 +83,45 @@
      :board   (mapcar 'copy-list (grid-board grid))
      :print-function (grid-print-function grid) ) )
 
-(defun transpose-grid(grid)
-  (let ((copy (copy-grid grid))
-        (board (grid-board grid)) )
-    (setf (grid-board copy) (transpose board))
-    copy ) )
+;; Grid builder
+
+(defstruct (grid-builder
+   (:constructor create-grid-builder (name function))
+   (:print-function
+       (lambda (grid-builder s k)
+           (format s "~A" (grid-builder-name grid-builder)) ) ) )
+   (name NIL :type simple-string)
+   (function 'read-grid-from-path) )
+
+
+(defun split-strings(strings)
+   (loop for string in strings
+      collect
+      (loop for i from 0 below (array-dimension string 0) 
+         collect
+         (aref string i) ) ) )
+
+(defun read-grid-from-path()
+ (create-grid-builder "File" 'grid-from-path))
+
+(defun grid-from-path(grid-builder)
+   (format t "~%Enter the name of the grid file:~%")
+   (parse-data-set
+     (validate-input
+      #'(lambda (choice) (probe-file choice))
+      "File does not exist~%" ) ) )
+
+(defun grid-from-board(board)
+   (let ((width (list-length board))
+         (length (list-length (car board))) )
+      (make-grid :rows width :cols length :board board :colors (count-distinct-beads board)) ) )
+
+(defun create-grid(grid-builder)
+   (funcall (grid-builder-function grid-builder) grid-builder) )
+
+(defun count-distinct-beads(some-list)
+   (list-length
+      (remove-duplicates
+         (remove NIL
+            (reduce 'append some-list) ) ) ) )
+
