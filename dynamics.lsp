@@ -1,20 +1,18 @@
-
-(defun play-as-human(user grid deadline &optional (moves (next-move user grid)) (previous-moves '()))
+(defun play-as-human(player grid deadline &optional (moves (next-move player grid)) (previous-moves '()))
   (let ((move (car moves)))
     (cond
       ((null move)
         (create-result grid NIL (reverse previous-moves)) )
       ((check-for-duplicate-move grid move)
         (feedback "~A is not a valid move!~%Try again...~%" move)
-        (play-as-human user grid deadline (next-move user grid) previous-moves) )
+        (play-as-human player grid deadline (next-move player grid) previous-moves) )
       (T
         (let ((new-grid (move-bead grid (car move) (cdr move))))
           (if
             (or (is-solved new-grid) (is-not-solved new-grid))
               (create-result new-grid NIL (reverse (cons move previous-moves)))
-            (play-as-human user new-grid deadline (next-move user new-grid)
+            (play-as-human player new-grid deadline (next-move player new-grid)
                (cons move previous-moves) ) ) ) ) ) ) )
-
 
 (defun human-move(grid)
    (print grid)

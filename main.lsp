@@ -9,17 +9,17 @@
 (defun main()
   (game-over
     (play
-      (create-human-user)
+      (create-human-player)
       (create-grid (read-grid-from-path)) ) ) )
 
-(defun get-deadline(user)
-  (if (user-feedback user)
+(defun get-deadline(player)
+  (if (player-feedback player)
     60
     (get-playing-time) ) )
 
-(defun play(user grid)
-  (let ((deadline (get-deadline user)))
-    (set-player-feedback (user-feedback user))
+(defun play(player grid)
+  (let ((deadline (get-deadline player)))
+    (set-player-feedback (player-feedback player))
     (gc) ;)
     (clear-screen)
     (print grid)
@@ -27,7 +27,7 @@
     (if
       (or (is-solved grid) (is-not-solved grid)) ; prevents a use-less first move by humans.
       (create-result grid)
-      (time (user-play user grid deadline)) ) ) )
+      (time (player-play player grid deadline)) ) ) )
 
 (defun play-again()
    (y-or-n-p "~%Play again?") )

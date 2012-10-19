@@ -25,10 +25,10 @@
   NIL ) )
 
 (defun set-player-feedback(feedback)
-  (setq *user-feedback* feedback) )
+  (setq *player-feedback* feedback) )
 
 (defun feedback(&rest args)
-  (if *user-feedback*
+  (if *player-feedback*
     (multiple-value-call 'format t (values-list args))
   NIL ) )
 

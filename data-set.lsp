@@ -1,4 +1,3 @@
-
 (defstruct (data-set
    (:include grid-builder)
    (:print-function

@@ -4,13 +4,13 @@
 (setq default-print-function 'print-grid)
 
 (setq *print-verbose* NIL)
-(setq *user-feedback* T)
+(setq *player-feedback* T)
 
 
 (let ((all-files '(
 "utility.lsp"
 "dynamics.lsp"
-"user.lsp"
+"player.lsp"
 "grid.lsp"
 "data-set.lsp"
 "dead.lsp"
