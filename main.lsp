@@ -12,13 +12,10 @@
       (create-human-player)
       (create-grid (read-grid-from-path)) ) ) )
 
-(defun get-deadline(player)
-  (if (player-feedback player)
-    60
-    (get-playing-time) ) )
 
 (defun play(player grid)
-  (let ((deadline (get-deadline player)))
+  (let 
+	((deadline (get-time player)))
     (set-player-feedback (player-feedback player))
     (gc) ;)
     (clear-screen)
@@ -26,7 +23,7 @@
     (format t "Playing with following board:~%")
     (if
       (or (is-solved grid) (is-not-solved grid)) ; prevents a use-less first move by humans.
-      (create-result grid)
+      (create-output grid)
       (time (player-play player grid deadline)) ) ) )
 
 (defun play-again()
@@ -41,9 +38,9 @@
           (grid-has-combinations
             (transpose (add-padding (grid-board grid) (grid-rows grid) (grid-cols grid) NIL)) ) ) ) )
 
-(defun game-over(result)
-  (print result)
-  (result-winner result) )
+(defun game-over(output)
+  (print output)
+  (output-winner output) )
 
 (defun press-enter NIL (format t "~%Press Enter to continue...~%") (read-char) )
 

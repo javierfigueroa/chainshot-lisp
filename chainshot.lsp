@@ -14,7 +14,7 @@
 "grid.lsp"
 "data-set.lsp"
 "dead.lsp"
-"result.lsp"
+"output.lsp"
 "main.lsp") ))
 
 (defun reload()

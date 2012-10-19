@@ -16,3 +16,16 @@
 
 (defun player-play(player grid deadline)
   (funcall (player-play-function player) player grid deadline) )
+
+(defun set-player-feedback(feedback)
+  (setq *player-feedback* feedback) )
+
+(defun feedback(&rest args)
+  (if *player-feedback*
+    (multiple-value-call 'format t (values-list args))
+  NIL ) )
+
+(defun get-time(player)
+  (if (player-feedback player)
+    60
+    (get-playing-time) ) )

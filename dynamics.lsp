@@ -2,15 +2,15 @@
   (let ((move (car moves)))
     (cond
       ((null move)
-        (create-result grid NIL (reverse previous-moves)) )
+        (create-output grid NIL (reverse previous-moves)) )
       ((check-for-duplicate-move grid move)
         (feedback "~A is not a valid move!~%Try again...~%" move)
         (play-as-human player grid deadline (next-move player grid) previous-moves) )
       (T
         (let ((new-grid (move-bead grid (car move) (cdr move))))
           (if
-            (or (is-solved new-grid) (is-not-solved new-grid))
-              (create-result new-grid NIL (reverse (cons move previous-moves)))
+            (or (is-not-solved new-grid)(is-solved new-grid) )
+              (create-output new-grid NIL (reverse (cons move previous-moves)))
             (play-as-human player new-grid deadline (next-move player new-grid)
                (cons move previous-moves) ) ) ) ) ) ) )
 
@@ -69,7 +69,7 @@
      (cons neighbor
        (find-neighbor-beads board neighbor dead (cons neighbor beads)) ) ) )
 
-(defun move-bead(grid row col) ;; from dynamics
+(defun move-bead(grid row col) 
   "Move bead."
   (multiple-value-bind (new-grid beads)
       (remove-beads (copy-grid grid) (find-beads grid row col))
@@ -85,7 +85,3 @@
     (if valid
       (values (arrange-grid grid) (list-length beads))
       (values grid 0) ) ) )
-
-(defun set-cell-color(grid row col val) ;; from top
-   "Set color for grid cell."
-   (setf (nth (1- row) (nth (1- col) (grid-board grid))) val) )
