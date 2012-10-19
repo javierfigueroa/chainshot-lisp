@@ -8,12 +8,8 @@
   move-function
   play-function )
 
-;; User prompts...
-
-(defun prompt-for-user()
-  (create-user 'human-move 'user-friendly T "Human"))
-
-;; Does a call-back to user's move- and play- functions.
+(defun create-human-user()
+  (create-user 'human-move 'play-as-human T "Human"))
 
 (defun next-move(user grid)
    (funcall (user-move-function user) grid) )

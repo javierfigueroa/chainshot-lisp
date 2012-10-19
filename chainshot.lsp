@@ -1,11 +1,21 @@
+(setq default-width 5)
+(setq default-length 5)
+(setq default-colors 5)
+(setq default-print-function 'report-grid-pretty)
+
+(setq *print-verbose* NIL)
+(setq *user-feedback* T)
+
+
 (let ((all-files '(
 "utility.lsp"
 "helpers.lsp"
-"ai.lsp"
-"users.lsp"
-"settings.lsp"
+; "ai.lsp"
+"dynamics.lsp"
+"user.lsp"
+; "settings.lsp"
 "grid.lsp"
-"grid-maker.lsp"
+"grid-builder.lsp"
 "visitor.lsp"
 "result.lsp"
 "main.lsp") ))

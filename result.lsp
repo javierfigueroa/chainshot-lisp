@@ -37,7 +37,7 @@
 (defun create-result(grid &optional (previous-result NIL) (moves '()) (timeout NIL))
   (merge-results
     (make-result :best grid :moves moves 
-      :winner (winnerp grid) :loser (loserp grid) :remaining (grid-count grid) :time-out timeout)
+      :winner (is-solved grid) :loser (is-not-solved grid) :remaining (grid-count grid) :time-out timeout)
     previous-result ) )
 
 (defun set-timed-out(result)

@@ -138,7 +138,7 @@
      (cell-color board (car piece) (cdr piece))
      (cell-color board (car other) (cdr other)) ) )
 
-(defun find-pieces(grid row col)
+(defun find-beads(grid row col)
   (if (null (get-color grid row col))
     '()
     (cons (cons row col)
@@ -156,31 +156,31 @@
             (cons (cons row (1+ col)) 
                (cons (cons row (1- col)) '()) ) ) ) ) )
 
-(defun find-neighbors(board piece visitor &optional (pieces '()))
-  "Returns a list of pieces neighboring piece having not yet been visited and having the same color."
+(defun find-neighbors(board piece visitor &optional (beads '()))
+  "Returns a list of beads neighboring piece having not yet been visited and having the same color."
   (visit visitor piece)
   (loop
     for neighbor in (get-neighbors piece) do NIL
     if (and (same-color-p board piece neighbor) (visited-p visitor neighbor))
     append
      (cons neighbor
-       (find-neighbors board neighbor visitor (cons neighbor pieces)) ) ) )
+       (find-neighbors board neighbor visitor (cons neighbor beads)) ) ) )
 
-(defun remove-pieces(grid pieces)
-   "Sets cell color of all pieces to NIL. Returns NIL if no pieces were changed."
-  (let ((valid (>= (list-length pieces) 2))) ; Valid combinations have size > 2
+(defun remove-beads(grid beads)
+   "Sets cell color of all beads to NIL. Returns NIL if no beads were changed."
+  (let ((valid (>= (list-length beads) 2))) ; Valid combinations have size > 2
     (and valid
-      (loop for p in pieces do
+      (loop for p in beads do
         (set-color grid (car p) (cdr p) NIL) ) )
     (if valid
-      (values (pack-grid grid) (list-length pieces))
+      (values (pack-grid grid) (list-length beads))
       (values grid 0) ) ) )
 
 (defun do-move(grid row col)
   "Tries to make a move at {row, col}.
    Returns the resulting grid and whether the move was valid.
    This function is non-destructive on grid."
-  (multiple-value-bind (new-grid pieces)
-      (remove-pieces (copy-grid grid) (find-pieces grid row col))
-    (when (zerop pieces) (format t "~%Invalid move: (~D, ~D)~%Previous grid: ~A" row col grid) (break))
+  (multiple-value-bind (new-grid beads)
+      (remove-beads (copy-grid grid) (find-beads grid row col))
+    (when (zerop beads) (format t "~%Invalid move: (~D, ~D)~%Previous grid: ~A" row col grid) (break))
     new-grid ) )

@@ -1,5 +1,10 @@
-
-;; Display the grid, with row and column indices (something akin to pretty-printing).
+(defstruct
+  (grid (:print-function  report-grid))
+  (board '() :type list)
+  (colors default-colors :type integer :read-only T)
+  (rows default-w :type integer :read-only T)
+  (cols default-len :type integer :read-only T)
+  (print-function default-print-function) )
 
 (defun report-grid(g s k)
    (funcall (grid-print-function g) g s k) )
@@ -16,19 +21,11 @@
 
 (defun report-grid-pretty(g s k)
   (show-grid g s)
-  (format s "~% ~D x ~D grid (~D colors) ~~ ~D pieces remain~%"
+  (format s "~% ~D x ~D grid (~D colors) ~~ ~D beads remain~%"
     (grid-cols g)
     (grid-rows g)
     (grid-colors g)
     (grid-count g) ) )
-
-(defstruct
-  (grid (:print-function  report-grid))
-  (board '() :type list)
-  (colors default-colors :type integer :read-only T)
-  (rows default-w :type integer :read-only T)
-  (cols default-len :type integer :read-only T)
-  (print-function default-print-function) )
 
 (defun copy-grid(grid)
   (make-grid
