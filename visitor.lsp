@@ -5,7 +5,7 @@
 (defun create-visitor(grid)
   "Makes an array the same size as grid, specifically for visiting."
   (make-visitor :board (make-array 
-      (multiple-value-list (get-dimensions grid))
+      (multiple-value-list (get-grid-dimensions grid))
       :fill-pointer NIL) ) )
 
 (defun visited-p(visitor piece &key (test #'null))

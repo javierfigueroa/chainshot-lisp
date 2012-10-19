@@ -1,38 +1,9 @@
 ;; Grid analysis:
 
-(defun random-fill(grid)
-   (setf (grid-board grid)
-      (fill-grid
-         (grid-rows grid)
-         (grid-cols grid)
-         (grid-colors grid) ) )
-   grid )
-
-(defun fill-grid(rows length colors)
-   "Returns a list of size rows x length.
-    The contents will be distributed randomly some number of colors."
-   (cond ((zerop rows) NIL)
-	   ((append (list (loop for x from 0 below length collect (int-to-color (random colors))))
-	       (fill-grid (1- rows) length colors))) ) )
-
-(defun grid-has-combos(grid)
-   "Returns T if the grid has any vertical combinations to be made."
-   (reduce #'(lambda (x y) (or x y)) (mapcar 'has-pairs grid)) )
-
-(defun has-pairs(line &optional (length (list-length line)))
-   "Returns T if a given list/line has two-in-a-row of any non-null color."
-   (cond
-      ((or (zerop length) (null (car line)) (null (cdr line))) NIL)
-      ((equalp (nth 0 line) (nth 1 line)) T)
-      ((has-pairs (cdr line) (1- length))) ) )
-
-(defun get-dimensions(grid)
-   "Returns the grid's dimensions: rows AND length."
-   (values (grid-rows grid) (grid-cols grid)) )
 
 ;; Grid manipulation:
 
-(defun get-color(grid row col)
+(defun get-bead-color(grid row col) ;from dynamics
    "Returns the color of the cell at {row, col}."
    (cell-color (grid-board grid) row col) )
 
@@ -139,7 +110,7 @@
      (cell-color board (car other) (cdr other)) ) )
 
 (defun find-beads(grid row col)
-  (if (null (get-color grid row col))
+  (if (null (get-bead-color grid row col))
     '()
     (cons (cons row col)
       (find-neighbors

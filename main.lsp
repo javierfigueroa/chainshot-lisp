@@ -37,8 +37,8 @@
 
 (defun is-not-solved(grid)
    (not
-      (or (grid-has-combos (grid-board grid))
-          (grid-has-combos
+      (or (grid-has-combinations (grid-board grid))
+          (grid-has-combinations
             (transpose (pad (grid-board grid) (grid-rows grid) (grid-cols grid) NIL)) ) ) ) )
 
 (defun game-over(result)

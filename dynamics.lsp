@@ -33,7 +33,7 @@
   (not (get-bead-group grid move)) )
 
 (defun get-bead-group(grid move)
-  (if (null (get-color grid (car move) (cdr move)))
+  (if (null (get-bead-color grid (car move) (cdr move)))
     (verbose "Null color for ~A... already been played.~%" move)
     (loop for neighbor in (get-neighbors move) do NIL
       when (same-color-p (grid-board grid) move neighbor)
