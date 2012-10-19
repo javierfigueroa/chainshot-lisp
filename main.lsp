@@ -33,13 +33,13 @@
    (y-or-n-p "~%Play again?") )
 
 (defun is-solved(grid)
-   (null (compress (grid-board grid))) )
+   (null (clean-board (grid-board grid))) )
 
 (defun is-not-solved(grid)
    (not
       (or (grid-has-combinations (grid-board grid))
           (grid-has-combinations
-            (transpose (pad (grid-board grid) (grid-rows grid) (grid-cols grid) NIL)) ) ) ) )
+            (transpose (add-padding (grid-board grid) (grid-rows grid) (grid-cols grid) NIL)) ) ) ) )
 
 (defun game-over(result)
   (print result)

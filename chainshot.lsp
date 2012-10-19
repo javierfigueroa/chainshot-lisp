@@ -9,7 +9,7 @@
 
 (let ((all-files '(
 "utility.lsp"
-"helpers.lsp"
+; "helpers.lsp"
 ; "ai.lsp"
 "dynamics.lsp"
 "user.lsp"
@@ -25,11 +25,16 @@
   T )
 
 (defun load-files()
+  (clean-files)
   (compile-all)
   (load-compiled)
   (verbose-off)
   (gc)
   (clear-screen) )
+
+(defun clean-files()
+  #+UNIX (run-shell-command "rm *.fas *.lib") 
+  NIL)
 
 (defun lsp-to-fas(name)
   (concatenate

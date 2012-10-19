@@ -23,6 +23,46 @@
    "Get grid dimensions."
    (values (grid-rows grid) (grid-cols grid)) )
 
+
+(defun show-grid(grid &optional (s t))
+   "Print grid."
+   (let* ((length (grid-cols grid)) (rows (grid-rows grid)))
+      (show-grid-inner
+        (transpose
+          (mapcar 'reverse
+            (add-padding (clean-board (grid-board grid)) rows length  ".") ) )
+         s (grid-cols grid))
+      (format s "~%    ")
+      (loop for x from 0 below rows do (format s "- -"))
+      (format s "~%    ")
+      (loop for x from 1 below (min 10 (1+ rows)) do (format s "  ~A" x))
+      (loop for x from 10 below (1+ rows) do (format s " ~A" x)) ) )
+
+(defun show-grid-inner(board s index)
+   "Print columns."
+   (when (not (atom board))
+      (show-line (car board) s index)
+      (show-grid-inner (cdr board) s (1- index))
+      T ) )
+
+(defun show-line(line s index)
+   "Print row."
+   (if (<= index 9)
+       (format s "~% ~A |" index)
+       (format s "~%~A |" index))
+   (loop for x in line do
+      (if (or (equalp "." x) (null x))
+         (format s "  .")
+         (format s "  ~A" x) ) ) )
+
+
+(defun grid-count(grid)
+  "Returns the number of cells left in grid."
+  (reduce '+
+    (mapcar
+      (lambda (line) (list-length (remove NIL line)))
+      (grid-board grid) ) ) )
+
 ;;; end checked
 
 (defun report-grid(g s k)
