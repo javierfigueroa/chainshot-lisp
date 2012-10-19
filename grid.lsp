@@ -10,8 +10,8 @@
 
 (defun grid-has-combinations(grid) ;from main
    "Checks the grid to see if it has any vertical combinations available."
-   (reduce #'(lambda (x y) (or x y)) (mapcar 'has-pairs grid)) )
-
+   (reduce #'(lambda (x y) (or x y)) (mapcar 'has-triple grid)) )
+; 
 (defun has-pairs(line &optional (length (list-length line)))
    "Check if the line has two of any non-null color beads."
    (cond
@@ -19,7 +19,14 @@
       ((equalp (nth 0 line) (nth 1 line)) T)
       ((has-pairs (cdr line) (1- length))) ) )
 
-(defun get-grid-dimensions(grid) ;from visitor
+(defun has-triple(line &optional (length (list-length line)))
+   "Check if the line has two of any non-null color beads."
+   (cond
+      ((or (zerop length) (<= length 2) (null (car line)) (null (cdr line))) NIL)
+      ((and  (equalp (nth 0 line) (nth 1 line)) (equalp (nth 1 line) (nth 2 line))) T)
+      ((has-triple (cdr line) (1- length))) ) )
+
+(defun get-grid-dimensions(grid) 
    "Get grid dimensions."
    (values (grid-rows grid) (grid-cols grid)) )
 

@@ -19,7 +19,7 @@
 
 (defun play(user grid)
   (let ((deadline (get-deadline user)))
-    (set-user-feedback (user-feedback user))
+    (set-player-feedback (user-feedback user))
     (gc) ;)
     (clear-screen)
     (print grid)

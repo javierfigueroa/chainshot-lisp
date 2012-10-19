@@ -9,14 +9,11 @@
 
 (let ((all-files '(
 "utility.lsp"
-; "helpers.lsp"
-; "ai.lsp"
 "dynamics.lsp"
 "user.lsp"
-; "settings.lsp"
 "grid.lsp"
 "grid-builder.lsp"
-"visitor.lsp"
+"dead.lsp"
 "result.lsp"
 "main.lsp") ))
 
@@ -28,7 +25,7 @@
   (clean-files)
   (compile-all)
   (load-compiled)
-  (verbose-off)
+  (set-verbose NIL)
   (gc)
   (clear-screen) )
 
@@ -57,3 +54,4 @@
 ) ; end-let
 
 (load-files)
+(chainshot)

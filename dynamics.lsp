@@ -22,11 +22,11 @@
    (list
      (let ((rows (grid-rows grid)) (cols (grid-cols grid)))
        (cons
-         (read-valid
-           #'(lambda (row) (and (integerp row) (between row 0 (1+ rows))))
+         (validate-input
+           #'(lambda (row) (and (integerp row) (is-between row 0 (1+ rows))))
            "Enter a valid row number...~%" )
-         (read-valid
-           #'(lambda (col) (and (integerp col) (between col 0 (1+ cols))))
+         (validate-input
+           #'(lambda (col) (and (integerp col) (is-between col 0 (1+ cols))))
            "Enter a valid column number...~%" ) ) ) ) )
 
 (defun check-for-duplicate-move(grid move)
@@ -51,7 +51,7 @@
       (find-neighbor-beads
         (grid-board grid)
         (cons row col)
-        (create-visitor grid) ) ) ) )
+        (create-dead grid) ) ) ) )
 
 (defun get-neighbor-beads(bead) ;;from find-neighbor-bead and dynamics 
    "Get neighbor beads adjacent to given bead."
@@ -61,15 +61,15 @@
             (cons (cons row (1+ col)) 
                (cons (cons row (1- col)) '()) ) ) ) ) )
 
-(defun find-neighbor-beads(board bead visitor &optional (beads '())) ;; from top
-  "Get beads neighboring bead with non-visited status and of the same color."
-  (visit visitor bead)
+(defun find-neighbor-beads(board bead dead &optional (beads '())) ;; from top
+  "Get beads neighboring bead with dead status and of the same color."
+  (mark-dead dead bead)
   (loop
     for neighbor in (get-neighbor-beads bead) do NIL
-    if (and (is-same-color-bead board bead neighbor) (visited-p visitor neighbor))
+    if (and (is-same-color-bead board bead neighbor) (is-dead dead neighbor))
     append
      (cons neighbor
-       (find-neighbor-beads board neighbor visitor (cons neighbor beads)) ) ) )
+       (find-neighbor-beads board neighbor dead (cons neighbor beads)) ) ) )
 
 (defun move-bead(grid row col) ;; from dynamics
   "Move bead."
