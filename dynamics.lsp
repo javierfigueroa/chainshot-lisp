@@ -51,7 +51,7 @@
         (cons row col)
         (create-dead grid) ) ) ) )
 
-(defun get-neighbor-beads(bead) ;;from find-neighbor-bead and dynamics 
+(defun get-neighbor-beads(bead)  
    "Get neighbor beads adjacent to given bead."
    (let ((row (car bead)) (col (cdr bead)))
       (cons (cons (1+ row) col)
