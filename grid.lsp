@@ -2,8 +2,8 @@
   (grid (:print-function  print-grid))
   (board '() :type list)
   (colors default-colors :type integer :read-only T)
-  (rows default-w :type integer :read-only T)
-  (cols default-len :type integer :read-only T)
+  (rows default-width :type integer :read-only T)
+  (cols default-length :type integer :read-only T)
   (print-function default-print-function) )
 
 (defun has-groups(grid)
@@ -136,13 +136,6 @@
    (name NIL :type simple-string)
    (function 'read-grid-from-path) )
 
-
-(defun split-strings(strings)
-   (loop for string in strings
-      collect
-      (loop for i from 0 below (array-dimension string 0) 
-         collect
-         (aref string i) ) ) )
 
 (defun read-grid-from-path()
  (create-grid-builder "File" 'grid-from-path))
