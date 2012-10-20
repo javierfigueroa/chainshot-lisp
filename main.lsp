@@ -33,10 +33,7 @@
    (null (clean-board (grid-board grid))) )
 
 (defun is-not-solved(grid)
-   (not
-      (or (grid-has-combinations (grid-board grid))
-          (grid-has-combinations
-            (transpose (add-padding (grid-board grid) (grid-rows grid) (grid-cols grid) NIL)) ) ) ) )
+   (not (has-groups grid)) )
 
 (defun game-over(output)
   (print output)

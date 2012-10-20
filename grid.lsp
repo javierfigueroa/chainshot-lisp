@@ -6,23 +6,14 @@
   (cols default-len :type integer :read-only T)
   (print-function default-print-function) )
 
-(defun grid-has-combinations(grid) ;from main
-   "Checks the grid to see if it has any vertical combinations available."
-   (reduce #'(lambda (x y) (or x y)) (mapcar 'has-triple grid)) )
-; 
-(defun has-pairs(line &optional (length (list-length line)))
-   "Check if the line has two of any non-null color beads."
-   (cond
-      ((or (zerop length) (null (car line)) (null (cdr line))) NIL)
-      ((equalp (nth 0 line) (nth 1 line)) T)
-      ((has-pairs (cdr line) (1- length))) ) )
-
-(defun has-triple(line &optional (length (list-length line)))
-   "Check if the line has two of any non-null color beads."
-   (cond
-      ((or (zerop length) (<= length 2) (null (car line)) (null (cdr line))) NIL)
-      ((and  (equalp (nth 0 line) (nth 1 line)) (equalp (nth 1 line) (nth 2 line))) T)
-      ((has-triple (cdr line) (1- length))) ) )
+(defun has-groups(grid)
+ "Check of the grid has bead groups of the same same color"
+  (loop for x from 1 to (get-grid-dimensions grid) do NIL
+   when (not (null (loop for y from 1 to (get-grid-dimensions grid) do NIL
+      when (>= (length (find-beads grid x y)) 3)
+        return T )))
+   return T) 
+)
 
 (defun get-grid-dimensions(grid) 
    "Get grid dimensions."

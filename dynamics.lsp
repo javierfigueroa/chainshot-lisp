@@ -9,7 +9,7 @@
       (T
         (let ((new-grid (move-bead grid (car move) (cdr move))))
           (if
-            (or (is-not-solved new-grid)(is-solved new-grid) )
+            (or (is-not-solved new-grid)(is-solved new-grid))
               (create-output new-grid NIL (reverse (cons move previous-moves)))
             (play-as-human player new-grid deadline (next-move player new-grid)
                (cons move previous-moves) ) ) ) ) ) ) )
