@@ -1,13 +1,6 @@
-(setq default-width 5)
-(setq default-length 5)
-(setq default-colors 5)
-(setq default-print-function 'print-grid)
+;;This file contains the main functions that compile, load and start the game 
 
-(setq *print-verbose* NIL)
-(setq *player-feedback* T)
-
-
-(let ((all-files '(
+(let ((files '(
 "utility.lsp"
 "dynamics.lsp"
 "player.lsp"
@@ -17,41 +10,41 @@
 "output.lsp"
 "main.lsp") ))
 
-(defun reload()
-  (loop for f in all-files do (load f))
-  T )
-
 (defun load-files()
   (clean-files)
   (compile-all)
   (load-compiled)
   (set-verbose NIL)
   (gc)
-  (clear-screen) )
+  (clear-terminal) )
 
 (defun clean-files()
+  "Clean previously compiled files."
   #+UNIX (run-shell-command "rm *.fas *.lib") 
   NIL)
+
+(defun compile-all()
+  "Compile files."
+  (loop
+    for file in files do
+    (compile-file file)
+    T ) )
+
+(defun load-compiled()
+  "Load compiled files."
+  (loop
+    for file in files do
+    (load (lsp-to-fas file))
+    T ) )
 
 (defun lsp-to-fas(name)
   (concatenate
     'simple-string
     (subseq name 0 (- (length name) 4))
     ".fas" ) )
+) 
 
-(defun compile-all()
-  (loop
-    for file in all-files do
-    (compile-file file)
-    T ) )
-
-(defun load-compiled()
-  (loop
-    for file in all-files do
-    (load (lsp-to-fas file))
-    T ) )
-
-) ; end-let
-
+;;Load files
 (load-files)
+;;Start the game
 (chainshot)

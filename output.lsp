@@ -1,3 +1,5 @@
+;; This file contains function related to the output IO, mostly printing the game statistics after the game is played
+
 (defstruct (output (:print-function print-output) )
   (winner NIL)
   (loser NIL)
@@ -24,7 +26,7 @@
 (defun create-output(grid &optional (previous-output NIL) (moves '()) (timeout NIL))
   (merge-outputs
     (make-output :best grid :moves moves 
-      :winner (is-solved grid) :loser (is-not-solved grid) :remaining (grid-count grid) :time-out timeout)
+      :winner (is-solved grid) :loser (is-not-solved grid) :remaining (grid-beads-left-count grid) :time-out timeout)
     previous-output ) )
 
 (defun time-out(grid &optional (moves '()))
@@ -37,7 +39,5 @@
     output
     other ) )
 
-; lower is better
 (defun scale-output(output)
   (output-remaining output) )
-

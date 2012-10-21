@@ -1,9 +1,13 @@
+;; This file contains functions of the dynamics of the game
+
 (defun play-as-human(player grid deadline &optional (moves (next-move player grid)) (previous-moves '()))
+  "This function contains the main logic that's executed for a human player. It checks if the player's move is valid
+  and if so it executes the move while checking if the move has reached an ending point in the game."
   (let ((move (car moves)))
     (cond
       ((null move)
         (create-output grid NIL (reverse previous-moves)) )
-      ((check-for-duplicate-move grid move)
+      ((check-for-invalid-move grid move)
         (feedback "~A is not a valid move!~%Try again...~%" move)
         (play-as-human player grid deadline (next-move player grid) previous-moves) )
       (T
@@ -15,8 +19,9 @@
                (cons move previous-moves) ) ) ) ) ) ) )
 
 (defun human-move(grid)
+   "Prompts human player for a move."
    (print grid)
-   (format t "~%Enter the row and column for your next move:~%")
+   (format t "~%Enter the row then press enter then enter the column of your next move:~%")
    (list
      (let ((rows (grid-rows grid)) (cols (grid-cols grid)))
        (cons
@@ -27,7 +32,9 @@
            #'(lambda (col) (and (integerp col) (is-between col 0 (1+ cols))))
            "Enter a valid column number...~%" ) ) ) ) )
 
-(defun check-for-duplicate-move(grid move)
+;; Helper methods for the above functions
+
+(defun check-for-invalid-move(grid move)
   (not (get-bead-group grid move)) )
 
 (defun get-bead-group(grid move)
@@ -83,5 +90,5 @@
       (loop for p in beads do
         (set-cell-color grid (car p) (cdr p) NIL) ) )
     (if valid
-      (values (arrange-grid grid) (list-length beads))
+      (values (clean-grid grid) (list-length beads))
       (values grid 0) ) ) )

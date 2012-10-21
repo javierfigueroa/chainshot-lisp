@@ -1,10 +1,12 @@
+;; This file contains the grid struct and the grid builder struct. Both with functions to handle grid related logic
+
 (defstruct
   (grid (:print-function  print-grid))
   (board '() :type list)
-  (colors default-colors :type integer :read-only T)
-  (rows default-width :type integer :read-only T)
-  (cols default-length :type integer :read-only T)
-  (print-function default-print-function) )
+  (colors 5 :type integer :read-only T) ;; default to 5 colors
+  (rows 5 :type integer :read-only T) ;; default to 5 rows
+  (cols 5 :type integer :read-only T) ;; default to 5 cols
+  (print-function 'print-grid) )
 
 (defun has-groups(grid)
  "Check of the grid has bead groups of the same same color"
@@ -22,7 +24,7 @@
 (defun show-grid(grid &optional (s t))
    "Print grid."
    (let* ((length (grid-cols grid)) (rows (grid-rows grid)))
-      (show-grid-inner
+      (show-grid-column
         (transpose
           (mapcar 'reverse
             (add-padding (clean-board (grid-board grid)) rows length  ".") ) )
@@ -33,14 +35,14 @@
       (loop for x from 1 below (min 10 (1+ rows)) do (format s "  ~A" x))
       (loop for x from 10 below (1+ rows) do (format s " ~A" x)) ) )
 
-(defun show-grid-inner(board s index)
+(defun show-grid-column(board s index)
    "Print columns."
    (when (not (atom board))
-      (show-line (car board) s index)
-      (show-grid-inner (cdr board) s (1- index))
+      (show-grid-row (car board) s index)
+      (show-grid-column (cdr board) s (1- index))
       T ) )
 
-(defun show-line(line s index)
+(defun show-grid-row(line s index)
    "Print row."
    (if (<= index 9)
        (format s "~% ~A |" index)
@@ -50,8 +52,7 @@
          (format s "  .")
          (format s "  ~A" x) ) ) )
 
-
-(defun grid-count(grid)
+(defun grid-beads-left-count(grid)
   "Returns the number of cells left in grid."
   (reduce '+
     (mapcar
@@ -59,14 +60,16 @@
       (grid-board grid) ) ) )
 
 (defun print-grid(g s k)
+  "Print the grid and footer info."
   (show-grid g s)
   (format s "~% ~D x ~D grid with ~D colors and ~D beads remaining~%"
     (grid-cols g)
     (grid-rows g)
     (grid-colors g)
-    (grid-count g) ) )
+    (grid-beads-left-count g) ) )
 
 (defun copy-grid(grid)
+  "Makes a copy of the grid."
   (make-grid
      :cols   (grid-cols grid)
      :rows   (grid-rows grid)
@@ -74,33 +77,34 @@
      :board   (mapcar 'copy-list (grid-board grid))
      :print-function (grid-print-function grid) ) )
 
-
 (defun get-cell-color-for-grid(grid row col) 
    "Get color of the cell by grid."
    (get-cell-color-for-board (grid-board grid) row col) )
 
-(defun get-cell-color-for-board(board row col) ;from top
+(defun get-cell-color-for-board(board row col) 
    "Get color of the cell by board."
   (if (and (plusp row) (plusp col))
     (nth (1- row) (nth (1- col) board))
     NIL ) )
 
-(defun set-cell-color(grid row col val) ;; from top
+(defun set-cell-color(grid row col val) 
    "Set color for grid cell."
    (setf (nth (1- row) (nth (1- col) (grid-board grid))) val) )
 
 (defun add-padding(board rows length char) 
+   "Adds NIL padding to the board."
    (cond ((<= rows 0) NIL)
          ((append (list (add-row-padding (car board) length char))
                   (add-padding (cdr board) (1- rows) length char))) ) )
 
 (defun add-row-padding(row length char) 
-   "Pads row to length with char."
+   "Adds NIL padding to the row."
    (cond ((zerop length) NIL)
          ((null row) (cons char (add-row-padding '() (1- length) char)))
          ((cons (car row) (add-row-padding (cdr row) (1- length) char))) ) )
 
-(defun arrange-grid(grid) 
+(defun clean-grid(grid) 
+  "Removes cells with with NIL in the grid."
   (setf
     (grid-board grid)
     (add-padding
@@ -111,7 +115,7 @@
   grid )
 
 (defun clean-board(board) 
-   "Removes cell with NIL in the board."
+   "Removes cells with NIL in the board."
    (cond ((null board) '())
        ((null (car board)) (clean-board (cdr board)))
        ((let ((a (clean-line (car board)))
@@ -121,12 +125,12 @@
                 (cons a b))) ) ) )
 
 (defun clean-line(line) ;; from top
-   "Removes NIL values from the line."
+   "Removes cells with NIL in the line."
    (cond ((null line) NIL)
       ((null (car line)) (clean-line (cdr line)))
       ((cons (car line) (clean-line (cdr line)))) ) )
 
-;; Grid builder
+;; Grid builder - Used to construct a grid object and other grid helper methods
 
 (defstruct (grid-builder
    (:constructor create-grid-builder (name function))

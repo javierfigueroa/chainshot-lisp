@@ -1,3 +1,5 @@
+;; This file contains the player struct and function related to the player's logic
+
 (defstruct (player
   (:constructor create-player (move-function play-function feedback name))
   (:print-function

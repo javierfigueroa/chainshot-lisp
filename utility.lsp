@@ -1,10 +1,14 @@
-;; Utility methods:
+;; This file contains utility functions used across the game
 
-(defun clear-screen()
+;;Some defaults
+(setq *print-verbose* NIL)
+(setq *player-feedback* T)
+
+(defun clear-terminal()
   #+UNIX (run-shell-command "clear") 
   NIL )
 
-(defun validate-input(test &optional (message "Invalid input, try again...~%"))
+(defun validate-input(test &optional (message "Invalid input, try again.~%"))
    (do ((val (read) (read)))
        ((funcall test val) val)
      (format t message) ) )
@@ -13,7 +17,7 @@
    (and (< lower num) (< num upper)) )
 
 (defun transpose (x)
-   "Do a transpose of x, such as in a matrix."
+   "Do a transpose of x."
    (apply #'mapcar (cons #'list x)) )
 
 (defun set-verbose(verbose)

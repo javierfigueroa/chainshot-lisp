@@ -1,4 +1,7 @@
-(defun chainshot()	  
+;; This file contains the main function of the game. Starting point is the function 'chainshot
+
+(defun chainshot()
+  "Game loop."	  
   (when (y-or-n-p "Welcome to Chainshot! Review rules of the game?") (rules))
   (main)
   (do NIL
@@ -7,6 +10,7 @@
   T )
 
 (defun main()
+  "Game play."
   (game-over
     (play
       (create-human-player)
@@ -14,11 +18,12 @@
 
 
 (defun play(player grid)
+  "Start game."
   (let 
 	((deadline (get-time player)))
     (set-player-feedback (player-feedback player))
     (gc) ;)
-    (clear-screen)
+    (clear-terminal)
     (print grid)
     (format t "~%Playing with following board:~%")
     (if
@@ -42,7 +47,7 @@
 (defun press-enter NIL (format t "~%Press Enter to continue...~%") (read-char) )
 
 (defun rules()
-  (clear-screen)
+  (clear-terminal)
 
   (format t "....==================....~%~%")
   (format t "Your objective:~%~%")

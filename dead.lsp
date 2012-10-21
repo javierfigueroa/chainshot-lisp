@@ -1,3 +1,6 @@
+;; This file contains the dead struct. 
+;; The dead struct represents a spot in the grid in which a bead has been 'popped' and it's no longer a bead or it's 'dead'
+
 (defstruct (dead)
    (board NIL :type array) )
 
