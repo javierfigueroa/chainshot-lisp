@@ -147,10 +147,8 @@
       #'(lambda (choice) (probe-file choice))
       "File does not exist~%" ) ) )
 
-(defun grid-from-board(board)
-   (let ((width (list-length board))
-         (length (list-length (car board))) )
-      (make-grid :rows width :cols length :board board :colors (count-distinct-beads board)) ) )
+(defun grid-from-board(board size)
+      (make-grid :rows size :cols size :board board :colors (count-distinct-beads board)) )
 
 (defun create-grid(grid-builder)
    (funcall (grid-builder-function grid-builder) grid-builder) )

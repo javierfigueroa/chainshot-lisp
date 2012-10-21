@@ -13,23 +13,25 @@
       :desc desc
       :function #'(lambda (data-set) (parse-data-set (data-set-path data-set))) ) )
 
-(defun parse-data-set(data_set)		
-   (with-open-file (is data_set :direction :input
+(defun parse-data-set(file)
+   "Read file, assumes first line is the size of the grid and following lines a row of the grid"
+   (with-open-file (is file :direction :input
                     :if-does-not-exist nil)
+      ;; Set the size of the grid
+      (setq size (parse-integer (safe-read-line is))) 
+ 
       (let ((strings NIL))
-         (do ((line (safe-read-line is) (safe-read-line is)))	
-             ((or (<= (length line) 1)(string= "" line) (not line)))
+         (do ((line (safe-read-line is) (safe-read-line is)))
+             ((or (string= "" line) (not line)))
+            ;; Remove spaces from strings and assign to strings variable looks like  ((b b g r r) (b b g r l)...
             (setq strings (cons (join-string-list (split-by-one-space line)) strings)) )
-     
-				format t "debug ~A" strings
-     (if ( and (not (null strings))(> (length strings) 0))
-         (grid-from-board (transpose (split-strings strings)))) ) ) )
+         (grid-from-board (transpose (split-strings strings)) size) ) ) )
 
 (defun safe-read-line(is)
    (read-line is NIL NIL) )
 
-(defun split-strings(strings)
-   (loop for string in strings	do
+(defun split-strings(strings)	
+  (loop for string in strings	do
       collect
       (loop for i from 0 below (array-dimension string 0) do
          collect

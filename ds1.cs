@@ -1,3 +1,4 @@
+5
 r g g b r
 g g b r r
 b b g g g
