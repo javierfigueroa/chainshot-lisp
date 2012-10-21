@@ -21,7 +21,7 @@
 (defun human-move(grid)
    "Prompts human player for a move."
    (print grid)
-   (format t "~%Enter the row then press enter then enter the column of your next move:~%")
+   (format t "~%Enter the row and column of your next move (e.g. 2 1):~%")
    (list
      (let ((rows (grid-rows grid)) (cols (grid-cols grid)))
        (cons

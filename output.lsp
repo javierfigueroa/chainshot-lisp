@@ -6,26 +6,26 @@
   (time-out NIL)
   (remaining NIL)
   (moves NIL :type list)
-  (best NIL :type grid) )
+  (result NIL :type grid) )
 
 (defun print-output(r s &rest rest)
-  (format-output s (output-best r) (output-moves r) (output-winner r) (output-loser r) (output-time-out r)) )
+  (format-output s (output-result r) (output-moves r) (output-winner r) (output-loser r) (output-time-out r)) )
 
-(defun format-output(s best moves winner loser time-out)
+(defun format-output(s result moves winner loser time-out)
   (cond
     (winner
       (format s "~%You're a winner!~%You made these moves:~%~A" moves)
        T )
     (T
       (cond
-        (time-out (format s "~%Time is out, the best output was:  ") )
-        (loser    (format s "~%You loose! the best output was:  ") )
+        (time-out (format s "~%Time is out, the output is:  ") )
+        (loser    (format s "~%You loose! the output is:  ") )
         (T        (format s "~%Go again?  ") ) )
-     (format s "~%~A~%~%Moves performed:~%~A~%" best moves) ) ) )
+     (format s "~%~A~%~%Moves performed:~%~A~%" result moves) ) ) )
 
 (defun create-output(grid &optional (previous-output NIL) (moves '()) (timeout NIL))
   (merge-outputs
-    (make-output :best grid :moves moves 
+    (make-output :result grid :moves moves 
       :winner (is-solved grid) :loser (is-not-solved grid) :remaining (grid-beads-left-count grid) :time-out timeout)
     previous-output ) )
 
