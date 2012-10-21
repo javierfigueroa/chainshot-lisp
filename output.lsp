@@ -17,7 +17,7 @@
     (T
       (cond
         (time-out (format s "~%Time is out, the best output was:  ") )
-        (loser    (format s "~%Sorry you loose! the best output was:  ") )
+        (loser    (format s "~%You loose! the best output was:  ") )
         (T        (format s "~%Go again?  ") ) )
      (format s "~%~A~%~%Moves performed:~%~A~%" best moves) ) ) )
 

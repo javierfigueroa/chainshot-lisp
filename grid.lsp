@@ -142,7 +142,7 @@
 
 (defun grid-from-path(grid-builder)
    (format t "~%Enter the name of the grid file:~%")
-   (parse-data-set
+   (parse-input
      (validate-input
       #'(lambda (choice) (probe-file choice))
       "File does not exist~%" ) ) )

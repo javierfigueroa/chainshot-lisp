@@ -20,7 +20,7 @@
     (gc) ;)
     (clear-screen)
     (print grid)
-    (format t "Playing with following board:~%")
+    (format t "~%Playing with following board:~%")
     (if
       (or (is-solved grid) (is-not-solved grid)) ; prevents a use-less first move by humans.
       (create-output grid)

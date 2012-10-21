@@ -32,7 +32,7 @@
 
 (defun get-bead-group(grid move)
   (if (null (get-cell-color-for-grid grid (car move) (cdr move)))
-    (verbose "Null color for ~A... already been played.~%" move)
+    (verbose "Bad color for ~A... already been played.~%" move)
     (loop for neighbor in (get-neighbor-beads move) do NIL
       when (is-same-color-bead (grid-board grid) move neighbor)
         return T ) ) )

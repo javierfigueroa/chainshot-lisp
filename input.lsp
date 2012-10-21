@@ -1,19 +1,19 @@
-(defstruct (data-set
+(defstruct (input
    (:include grid-builder)
    (:print-function
-       (lambda (data-set s k)
-           (format s "~A ~A" (grid-builder-name data-set) (data-set-desc data-set)) ) ) )
+       (lambda (input s k)
+           (format s "~A ~A" (grid-builder-name input) (input-desc input)) ) ) )
    (desc NIL :type simple-string)
    (path NIL :type simple-string) )
 
-(defun create-data-set(name path desc)
-   (make-data-set
+(defun create-input(name path desc)
+   (make-input
       :name name
       :path path
       :desc desc
-      :function #'(lambda (data-set) (parse-data-set (data-set-path data-set))) ) )
+      :function #'(lambda (input) (parse-input (input-path input))) ) )
 
-(defun parse-data-set(file)
+(defun parse-input(file)
    "Read file, assumes first line is the size of the grid and following lines a row of the grid"
    (with-open-file (is file :direction :input
                     :if-does-not-exist nil)
