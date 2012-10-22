@@ -27,10 +27,10 @@
       (show-grid-column
         (transpose
           (mapcar 'reverse
-            (add-padding (clean-board (grid-board grid)) rows length  ".") ) )
+            (add-padding (clean-board (grid-board grid)) rows length  " ") ) )
          s (grid-cols grid))
       (format s "~%    ")
-      (loop for x from 0 below rows do (format s "- -"))
+      (loop for x from 0 below rows do (format s "  -"))
       (format s "~%    ")
       (loop for x from 1 below (min 10 (1+ rows)) do (format s "  ~A" x))
       (loop for x from 10 below (1+ rows) do (format s " ~A" x)) ) )
@@ -48,8 +48,8 @@
        (format s "~% ~A |" index)
        (format s "~%~A |" index))
    (loop for x in line do
-      (if (or (equalp "." x) (null x))
-         (format s "  .")
+      (if (or (equalp " " x) (null x))
+         (format s "   ")
          (format s "  ~A" x) ) ) )
 
 (defun grid-beads-left-count(grid)
@@ -62,10 +62,8 @@
 (defun print-grid(g s k)
   "Print the grid and footer info."
   (show-grid g s)
-  (format s "~% ~D x ~D grid with ~D colors and ~D beads remaining~%"
-    (grid-cols g)
-    (grid-rows g)
-    (grid-colors g)
+
+  (format s "~%~% ....===== ~D beads remaining =====....~%"
     (grid-beads-left-count g) ) )
 
 (defun copy-grid(grid)
@@ -124,7 +122,7 @@
                 b
                 (cons a b))) ) ) )
 
-(defun clean-line(line) ;; from top
+(defun clean-line(line) 
    "Removes cells with NIL in the line."
    (cond ((null line) NIL)
       ((null (car line)) (clean-line (cdr line)))
@@ -145,7 +143,7 @@
  (create-grid-builder "File" 'grid-from-path))
 
 (defun grid-from-path(grid-builder)
-   (format t "~%Enter the name of the grid file:~%")
+   (format t "~%Enter the path and file name for the grid (e.g. /path/to/file.txt):~%")
    (parse-input
      (validate-input
       #'(lambda (choice) (probe-file choice))

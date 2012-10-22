@@ -5,7 +5,7 @@
   (when (y-or-n-p "Welcome to Chainshot! Review rules of the game?") (rules))
   (main)
   (do NIL
-    ((not (play-again)))
+    ((not (y-or-n-p "~%Play again?")))
     (main) )
   T )
 
@@ -20,19 +20,16 @@
 (defun play(player grid)
   "Start game."
   (let 
-	((deadline (get-time player)))
+	((playing-time (get-time player)))
     (set-player-feedback (player-feedback player))
     (gc) ;)
     (clear-terminal)
-    (print grid)
-    (format t "~%Playing with following board:~%")
+    ; (print grid)
+    (format t "~% ....===== Grid =====....")
     (if
       (or (is-solved grid) (is-not-solved grid)) ; prevents a use-less first move by humans.
       (create-output grid)
-      (time (player-play player grid deadline)) ) ) )
-
-(defun play-again()
-   (y-or-n-p "~%Play again?") )
+      (time (player-play player grid playing-time)) ) ) )
 
 (defun is-solved(grid)
    (null (clean-board (grid-board grid))) )
@@ -58,7 +55,7 @@
   (format t "....==================....~%~%")
   (format t "Your moves:~%~%")
   (format t "....==================....~%~%")
-  (format t "You'll need to choose a column and row from the grid to provide the location of a bead within the grid. The beads of the same color that are adjacent to each other, either vertically or horizontally are candidates for removal.")
+  (format t "You'll need to choose a column and row from the grid to provide the location of a bead within the grid. The beads of the same color that are adjacent to each other, either vertically or horizontally are candidates for removal. ")
   (format t "Only beads that are groups that consist of 3 beads or more will be removed upon a move.~%~%")
   (format t "....==================....~%~%")
   (format t "Some dynamics of the game:~%~%")

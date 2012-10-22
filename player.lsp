@@ -16,8 +16,8 @@
 (defun next-move(player grid)
    (funcall (player-move-function player) grid) )
 
-(defun player-play(player grid deadline)
-  (funcall (player-play-function player) player grid deadline) )
+(defun player-play(player grid playing-time)
+  (funcall (player-play-function player) player grid playing-time) )
 
 (defun set-player-feedback(feedback)
   (setq *player-feedback* feedback) )

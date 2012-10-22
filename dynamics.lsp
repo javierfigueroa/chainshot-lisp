@@ -1,6 +1,6 @@
 ;; This file contains functions of the dynamics of the game
 
-(defun play-as-human(player grid deadline &optional (moves (next-move player grid)) (previous-moves '()))
+(defun play-as-human(player grid playing-time &optional (moves (next-move player grid)) (previous-moves '()))
   "This function contains the main logic that's executed for a human player. It checks if the player's move is valid
   and if so it executes the move while checking if the move has reached an ending point in the game."
   (let ((move (car moves)))
@@ -8,29 +8,29 @@
       ((null move)
         (create-output grid NIL (reverse previous-moves)) )
       ((check-for-invalid-move grid move)
-        (feedback "~A is not a valid move!~%Try again...~%" move)
-        (play-as-human player grid deadline (next-move player grid) previous-moves) )
+        (feedback "~A is not a valid move!~%~%" move)
+        (play-as-human player grid playing-time (next-move player grid) previous-moves) )
       (T
         (let ((new-grid (move-bead grid (car move) (cdr move))))
           (if
             (or (is-not-solved new-grid)(is-solved new-grid))
               (create-output new-grid NIL (reverse (cons move previous-moves)))
-            (play-as-human player new-grid deadline (next-move player new-grid)
+            (play-as-human player new-grid playing-time (next-move player new-grid)
                (cons move previous-moves) ) ) ) ) ) ) )
 
 (defun human-move(grid)
    "Prompts human player for a move."
    (print grid)
-   (format t "~%Enter the row and column of your next move (e.g. 2 1):~%")
+   (format t "~%Enter a row and a column (e.g. 2 1):~%")
    (list
      (let ((rows (grid-rows grid)) (cols (grid-cols grid)))
        (cons
          (validate-input
            #'(lambda (row) (and (integerp row) (is-between row 0 (1+ rows))))
-           "Enter a valid row number...~%" )
+           "Enter a valid row number~%" )
          (validate-input
            #'(lambda (col) (and (integerp col) (is-between col 0 (1+ cols))))
-           "Enter a valid column number...~%" ) ) ) ) )
+           "Enter a valid column number~%" ) ) ) ) )
 
 ;; Helper methods for the above functions
 
@@ -39,17 +39,17 @@
 
 (defun get-bead-group(grid move)
   (if (null (get-cell-color-for-grid grid (car move) (cdr move)))
-    (verbose "Bad color for ~A... already been played.~%" move)
+    (logger "Bad color for ~A.~%" move)
     (loop for neighbor in (get-neighbor-beads move) do NIL
       when (is-same-color-bead (grid-board grid) move neighbor)
         return T ) ) )
 
-(defun is-same-color-bead(board bead other) ;; from dynamics
+(defun is-same-color-bead(board bead other) 
    (equalp
      (get-cell-color-for-board board (car bead) (cdr bead))
      (get-cell-color-for-board board (car other) (cdr other)) ) )
 
-(defun find-beads(grid row col) ;; from move-bead
+(defun find-beads(grid row col) 
   (if (null (get-cell-color-for-grid grid row col))
     '()
     (cons (cons row col)
@@ -66,7 +66,7 @@
             (cons (cons row (1+ col)) 
                (cons (cons row (1- col)) '()) ) ) ) ) )
 
-(defun find-neighbor-beads(board bead dead &optional (beads '())) ;; from top
+(defun find-neighbor-beads(board bead dead &optional (beads '())) 
   "Get beads neighboring bead with dead status and of the same color."
   (mark-dead dead bead)
   (loop

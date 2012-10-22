@@ -1,7 +1,7 @@
 ;; This file contains utility functions used across the game
 
-;;Some defaults
-(setq *print-verbose* NIL)
+;;Some globals
+(setq *logger* NIL)
 (setq *player-feedback* T)
 
 (defun clear-terminal()
@@ -20,10 +20,10 @@
    "Do a transpose of x."
    (apply #'mapcar (cons #'list x)) )
 
-(defun set-verbose(verbose)
-  (setq *print-verbose* verbose) )
+(defun set-logger(log)
+  (setq *logger* log) )
 
-(defun verbose(&rest args)
-  (if *print-verbose*
+(defun logger(&rest args)
+  (if *logger*
     (multiple-value-call 'format t (values-list args))
   NIL ) )

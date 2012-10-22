@@ -14,7 +14,7 @@
   (clean-files)
   (compile-all)
   (load-compiled)
-  (set-verbose NIL)
+  (set-logger NIL)
   (gc)
   (clear-terminal) )
 

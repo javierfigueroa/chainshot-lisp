@@ -8,26 +8,26 @@
   (moves NIL :type list)
   (result NIL :type grid) )
 
+(defun create-output(grid &optional (previous-output NIL) (moves '()) (timeout NIL))
+  (merge-outputs
+    (make-output :result grid :moves moves 
+      :winner (is-solved grid) :loser (is-not-solved grid) :remaining (grid-beads-left-count grid) :time-out timeout)
+    previous-output ) )
+
 (defun print-output(r s &rest rest)
   (format-output s (output-result r) (output-moves r) (output-winner r) (output-loser r) (output-time-out r)) )
 
 (defun format-output(s result moves winner loser time-out)
   (cond
     (winner
-      (format s "~%You're a winner!~%You made these moves:~%~A" moves)
+      (format s "~%Game over, you win!~%You made these moves:~%~A" moves)
        T )
     (T
-      (cond
-        (time-out (format s "~%Time is out, the output is:  ") )
-        (loser    (format s "~%You loose! the output is:  ") )
-        (T        (format s "~%Go again?  ") ) )
-     (format s "~%~A~%~%Moves performed:~%~A~%" result moves) ) ) )
-
-(defun create-output(grid &optional (previous-output NIL) (moves '()) (timeout NIL))
-  (merge-outputs
-    (make-output :result grid :moves moves 
-      :winner (is-solved grid) :loser (is-not-solved grid) :remaining (grid-beads-left-count grid) :time-out timeout)
-    previous-output ) )
+      (cond	
+        (loser    (format s "~%Game over, you lost!  ") )
+        (time-out (format s "~%Game over, the time is out  ") )
+        (T        (format s "~%Game over, play again?  ") ) )
+     (format s "~%~A~%Moves performed:~%~A~%" result moves) ) ) )
 
 (defun time-out(grid &optional (moves '()))
   (create-output grid NIL moves T) )
