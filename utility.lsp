@@ -27,3 +27,11 @@
   (if *logger*
     (multiple-value-call 'format t (values-list args))
   NIL ) )
+  
+(defun create-dictionary(&rest values)
+  (let ((ht (make-hash-table))
+        (index (list-length values)))
+    (loop for val in (reverse values) do
+      (setf (gethash index ht) val)
+      (setq index (1- index)) )
+    ht) )

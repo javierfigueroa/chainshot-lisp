@@ -8,6 +8,8 @@
   (moves NIL :type list)
   (result NIL :type grid) )
 
+(defun now NIL (get-internal-run-time))
+
 (defun create-output(grid &optional (previous-output NIL) (moves '()) (timeout NIL))
   (merge-outputs
     (make-output :result grid :moves moves 

@@ -13,7 +13,7 @@
   "Game play."
   (game-over
     (play
-      (create-human-player)
+      (prompt-for-player)
       (create-grid (read-grid-from-path)) ) ) )
 
 
@@ -27,7 +27,7 @@
     ; (print grid)
     (format t "~% ....===== Grid =====....")
     (if
-      (or (is-solved grid) (is-not-solved grid)) ; prevents a use-less first move by humans.
+      (or (is-solved grid) (is-not-solved grid)) 
       (create-output grid)
       (time (player-play player grid playing-time)) ) ) )
 
