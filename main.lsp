@@ -24,8 +24,8 @@
     (set-player-feedback (player-feedback player))
     (gc) ;)
     (clear-terminal)
-    ; (print grid)
-    (format t "~% ....===== Grid =====....")
+    (print grid)
+    ;(format t "~% ....===== Grid =====....")
     (if
       (or (is-solved grid) (is-not-solved grid)) 
       (create-output grid)

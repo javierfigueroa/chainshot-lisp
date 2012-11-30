@@ -29,9 +29,9 @@
   NIL ) )
   
 (defun create-dictionary(&rest values)
-  (let ((ht (make-hash-table))
+  (let ((hashtable (make-hash-table))
         (index (list-length values)))
     (loop for val in (reverse values) do
-      (setf (gethash index ht) val)
+      (setf (gethash index hashtable) val)
       (setq index (1- index)) )
-    ht) )
+    hashtable) )
