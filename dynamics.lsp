@@ -43,6 +43,8 @@
 ;; First come first play player
 
 (defun first-come-first-played(player grid deadline &optional (moves (next-move player grid)) (previous-moves '()))
+ "This function moves through the board and tries every row and column until it reaches a terminal state, it does
+ not backtrack. If it gets stuck it terminates."
  (let ((move (car moves)))
    (cond
      ((null move)
@@ -62,6 +64,8 @@
 
 ;; Depth-First search
 (defun depth-first-search(player grid deadline &optional (moves (next-move player grid)) (result (create-output grid)) (previous-moves '()))
+  "This function implements a depth-first search to explore the board, backtracking where needed until finding a solution or
+  the time runs out."
   (cond
     ((> (now) deadline)
       (with-time-out
