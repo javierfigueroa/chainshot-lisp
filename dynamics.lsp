@@ -13,7 +13,7 @@
       (T
         (let ((new-grid (move-bead grid (car move) (cdr move))))
           (if
-            (or (null new-grid)(is-solved new-grid)(is-not-solved new-grid))
+            (or (is-solved new-grid)(is-not-solved new-grid))
               (create-output new-grid NIL (reverse (cons move previous-moves)))
             (play-as-human player new-grid playing-time (next-move player new-grid)
                (cons move previous-moves) ) ) ) ) ) ) )
@@ -43,7 +43,7 @@
      (T
        (let ((new-grid (move-bead grid (car move) (cdr move))))
          (if
-           (or (not (null new-grid)) (is-solved new-grid) (is-not-solved new-grid))
+           (or (is-solved new-grid) (is-not-solved new-grid))
              (create-output new-grid NIL (reverse (cons move previous-moves)))
            (first-combo-first-searched user new-grid deadline (next-move user new-grid)
               (cons move previous-moves) ) ) ) ) ) ) )
@@ -64,13 +64,13 @@
             ((new-grid (move-bead (copy-grid grid) (car move) (cdr move)))
              (result
                (depth-first user new-grid deadline (next-move user new-grid) result (cons move previous-moves)) ) )
-            (if (or (result-winner result) (result-time-out result))
+            (if (or (output-winner result) (output-time-out result))
               result
               ; TODO : I reversed the list of upcoming moves after each failure
               (depth-first user grid deadline (reverse (cdr moves)) result previous-moves) ) ) ) ) ) ) )
 
 
-(defun single-move-per-combo(grid)
+(defun single-move(grid)
  (let ((board (grid-board grid)))
    (reverse
      (loop
@@ -103,7 +103,7 @@
 ;; Helper methods for the above functions
 
 (defun check-for-invalid-move(grid move)
-  (not (get-bead-group grid move)) )
+    (or (null (>= (length (find-beads grid (car move) (cdr move))) 3)) (not (get-bead-group grid move)))) 
 
 (defun get-bead-group(grid move)
   (if (null (get-cell-color-for-grid grid (car move) (cdr move)))
@@ -148,7 +148,7 @@
   "Move bead."
   (multiple-value-bind (new-grid beads)
       (remove-beads (copy-grid grid) (find-beads grid row col))
-    (when (zerop beads) (format t "~%Bad move: (~D, ~D)~%Previous grid: ~A" row col grid) NIL)
+    (when (zerop beads) (format t "~%Bad move: (~D, ~D)~%Previous grid: ~A" row col grid) (break))
     new-grid ) )
 
 (defun remove-beads(grid beads)

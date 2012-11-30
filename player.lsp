@@ -10,9 +10,6 @@
   move-function
   play-function )
 
-(defun create-human-player()
-  (create-player 'human-move 'play-as-human T "Human"))
-
 (defun next-move(player grid)
    (funcall (player-move-function player) grid) )
 
@@ -47,8 +44,8 @@
   (let ((player-dictionary
     (create-dictionary
       (create-player 'human-move 'play-as-human T "Human")
-      (create-player 'single-move-per-combo 'first-combo-first-searched NIL "AI simple: The first combo it can find")
-      (create-player 'single-move-per-combo 'depth-first NIL "AI good: depth-first search, strictly one move per combo") ) ))
+      (create-player 'single-move 'first-combo-first-searched NIL "AI simple: The first combo it can find")
+      (create-player 'single-move 'depth-first NIL "AI good: depth-first search, strictly one move per combo") ) ))
    (format t "~%Please choose a user:~%")
    (maphash
      #'(lambda (key entry) (format t "  ~A : ~A~%" key entry))
